@@ -32,13 +32,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.uidemo.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -59,7 +62,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignedInActivity extends FragmentActivity implements LocationListener {
+public class SignedInActivity extends FragmentActivity implements LocationListener, GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnMarkerDragListener,
+        SeekBar.OnSeekBarChangeListener,
+        OnMapReadyCallback,
+        GoogleMap.OnInfoWindowLongClickListener,
+        GoogleMap.OnInfoWindowCloseListener {
 
     @BindView(android.R.id.content)
     View mRootView;
@@ -72,6 +81,8 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
 
     @BindView(R.id.user_display_name)
     TextView mUserDisplayName;
+
+    private FirebaseUser currentUser;
 
     private static final String TAG = "SignInActivity";
 
@@ -86,7 +97,8 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
     private static final float ZOOM_LEVEL = 12;
 
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mGpsRef = mRootRef.child("gps");
+    private DatabaseReference mUserRef;
+    private DatabaseReference mGpsRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +108,7 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
         Log.d(TAG, "onCreate " + savedInstanceState);
         super.onCreate(savedInstanceState);
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
             startActivity(AuthUiActivity.createIntent(this));
             finish();
@@ -133,6 +145,15 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
 
             marker = googleMap.addMarker(new MarkerOptions().
                     position(startingPoint).title("Starting Position"));
+
+            // Set a listener for info window events.
+            googleMap.setOnInfoWindowClickListener(this);
+            googleMap.setOnMarkerClickListener(this);
+            googleMap.setOnInfoWindowClickListener(this);
+            googleMap.setOnMarkerDragListener(this);
+            googleMap.setOnInfoWindowCloseListener(this);
+            googleMap.setOnInfoWindowLongClickListener(this);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,7 +164,7 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
         Log.d(TAG, "signOut ");
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnCompleteListener(     new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -158,28 +179,30 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
 
     @MainThread
     private void populateProfile() {
+        mUserRef = mRootRef.child(currentUser.getUid());
+        mUserRef.setValue(currentUser);
         Log.d(TAG, "populateProfile ");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user.getPhotoUrl() != null) {
+
+        if (currentUser.getPhotoUrl() != null) {
             Glide.with(this)
-                    .load(user.getPhotoUrl())
+                    .load(currentUser.getPhotoUrl())
                     .fitCenter()
                     .into(mUserProfilePicture);
         }
 
         mUserEmail.setText(
-                TextUtils.isEmpty(user.getEmail()) ? "No email" : user.getEmail());
+                TextUtils.isEmpty(currentUser.getEmail()) ? "No email" : currentUser.getEmail());
         mUserDisplayName.setText(
-                TextUtils.isEmpty(user.getDisplayName()) ? "No display name" : user.getDisplayName());
+                TextUtils.isEmpty(currentUser.getDisplayName()) ? "No display name" : currentUser.getDisplayName());
 
         StringBuilder providerList = new StringBuilder();
 
         providerList.append("Providers used: ");
 
-        if (user.getProviders() == null || user.getProviders().isEmpty()) {
+        if (currentUser.getProviders() == null || currentUser.getProviders().isEmpty()) {
             providerList.append("none");
         } else {
-            Iterator<String> providerIter = user.getProviders().iterator();
+            Iterator<String> providerIter = currentUser.getProviders().iterator();
             while (providerIter.hasNext()) {
                 String provider = providerIter.next();
                 if (GoogleAuthProvider.PROVIDER_ID.equals(provider)) {
@@ -213,6 +236,7 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
 
     @Override
     public void onLocationChanged(Location location) {
+        mGpsRef = mUserRef.child("gps");
         marker.remove();
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
         if (googleMap == null) {
@@ -226,9 +250,9 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
 
         marker = googleMap.addMarker(new MarkerOptions().
-                position(position).title("Position Now"));
+                position(position));
 
-        mGpsRef.setValue(position);
+        mGpsRef.push().setValue(position);
     }
 
     @Override
@@ -244,5 +268,69 @@ public class SignedInActivity extends FragmentActivity implements LocationListen
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("Latitude", "status");
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(this, "Info window clicked",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        // Set a listener for info window events.
+        googleMap.setOnInfoWindowClickListener(this);
+        googleMap.setOnMarkerClickListener(this);
+        googleMap.setOnInfoWindowClickListener(this);
+        googleMap.setOnMarkerDragListener(this);
+        googleMap.setOnInfoWindowCloseListener(this);
+        googleMap.setOnInfoWindowLongClickListener(this);
+    }
+
+    @Override
+    public void onInfoWindowClose(Marker marker) {
+
+    }
+
+    @Override
+    public void onInfoWindowLongClick(Marker marker) {
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(this, "Info window clicked",
+                Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }
