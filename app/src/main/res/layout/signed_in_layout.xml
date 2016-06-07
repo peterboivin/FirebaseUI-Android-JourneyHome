@@ -14,51 +14,25 @@
         android:layout_marginTop="16dp"
         android:orientation="vertical">
 
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:drawableTop="@drawable/firebase_auth_120dp"
-            android:text="@string/signed_in_header" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/sign_out"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:text="@string/sign_out" />
-
-            <Button
-                android:id="@+id/delete_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:text="@string/delete_account_label"
-                android:theme="@style/WarnButton" />
-
-        </LinearLayout>
-
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_profile_header"/>
+        <!--<TextView-->
+            <!--style="@style/Base.TextAppearance.AppCompat.Headline"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:drawableTop="@drawable/firebase_auth_120dp"-->
+            <!--android:text="@string/signed_in_header" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_profile_header" />
 
             <ImageView
                 android:id="@+id/user_profile_picture"
@@ -70,9 +44,10 @@
                 android:src="@drawable/anon_user_48dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_weight="0.55">
 
                 <TextView
                     android:id="@+id/user_email"
@@ -92,6 +67,78 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/sign_out"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:text="@string/sign_out" />
+
+            <!--<Button-->
+            <!--android:id="@+id/delete_account"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_margin="16dp"-->
+            <!--android:text="@string/delete_account_label"-->
+            <!--android:theme="@style/WarnButton" />-->
+
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="352dp"
+            android:layout_height="456dp"
+            tools:context="com.example.mygooglemapslib.MapsActivity"
+            android:layout_gravity="center_horizontal|bottom" />
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewCondition"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_centerVertical="true"-->
+
+                <!--android:text="Condition"-->
+                <!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/buttonSunny"-->
+                <!--android:layout_width="105dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignBaseline="@+id/textViewCondition"-->
+                <!--android:layout_alignBottom="@+id/textViewCondition"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:text="Sunny" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/buttonFoggy"-->
+                <!--android:layout_width="105dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignTop="@+id/buttonSunny"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:text="Foggy" />-->
+        <!--</RelativeLayout>-->
+
 
     </LinearLayout>
 </ScrollView>

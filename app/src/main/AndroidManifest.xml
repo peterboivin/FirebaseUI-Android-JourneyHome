@@ -4,6 +4,16 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="com.example.googlemaps.permission.MAPS_RECEIVE" />
+    <permission
+        android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <!--<meta-data-->
+        <!--android:name="com.google.android.maps.v2.API_KEY"-->
+        <!--android:value="AIzaSyC6fx6USvax8BAu2HM7V0BC2YV5rz3lDx0" />-->
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -115,7 +115,7 @@ public class ChatActivity extends AppCompatActivity {
         // sign in before attaching the RecyclerView adapter otherwise the Adapter will
         // not be able to read any data from the Database.
         if (!isSignedIn()) {
-            signInAnonymously();
+//            signInAnonymously();
         } else {
             attachRecyclerViewAdapter();
         }
@@ -158,24 +158,24 @@ public class ChatActivity extends AppCompatActivity {
         mMessages.setAdapter(mRecyclerViewAdapter);
     }
 
-    private void signInAnonymously() {
-        Toast.makeText(this, "Signing in...", Toast.LENGTH_SHORT).show();
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
-                        if (task.isSuccessful()) {
-                            Toast.makeText(ChatActivity.this, "Signed In",
-                                    Toast.LENGTH_SHORT).show();
-                            attachRecyclerViewAdapter();
-                        } else {
-                            Toast.makeText(ChatActivity.this, "Sign In Failed",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
+//    private void signInAnonymously() {
+//        Toast.makeText(this, "Signing in...", Toast.LENGTH_SHORT).show();
+//        mAuth.signInAnonymously()
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
+//                        if (task.isSuccessful()) {
+//                            Toast.makeText(ChatActivity.this, "Signed In",
+//                                    Toast.LENGTH_SHORT).show();
+//                            attachRecyclerViewAdapter();
+//                        } else {
+//                            Toast.makeText(ChatActivity.this, "Sign In Failed",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
 
     public boolean isSignedIn() {
         return (mAuth.getCurrentUser() != null);

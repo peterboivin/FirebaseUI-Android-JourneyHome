@@ -23,14 +23,21 @@ import android.support.annotation.MainThread;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.uidemo.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -48,6 +55,8 @@ public class AuthUiActivity extends Activity {
             "https://www.firebase.com/terms/terms-of-service.html";
 
     private static final int RC_SIGN_IN = 100;
+
+    private static final String TAG = "AuthUiActivity";
 
     @BindView(R.id.default_theme)
     RadioButton mUseDefaultTheme;
@@ -91,6 +100,7 @@ public class AuthUiActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate " + savedInstanceState);
         super.onCreate(savedInstanceState);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -121,6 +131,7 @@ public class AuthUiActivity extends Activity {
 
     @OnClick(R.id.sign_in)
     public void signIn(View view) {
+        Log.d(TAG, "signIn " + view.toString());
         startActivityForResult(
                 AuthUI.getInstance().createSignInIntentBuilder()
                         .setTheme(getSelectedTheme())
@@ -133,6 +144,7 @@ public class AuthUiActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             handleSignInResponse(resultCode, data);
@@ -144,6 +156,7 @@ public class AuthUiActivity extends Activity {
 
     @MainThread
     private void handleSignInResponse(int resultCode, Intent data) {
+        Log.d(TAG, "handleSignInResponse: " + resultCode);
         if (resultCode == RESULT_OK) {
             startActivity(SignedInActivity.createIntent(this));
             finish();
