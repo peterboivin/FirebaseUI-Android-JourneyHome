@@ -23,7 +23,7 @@
             <!--android:text="@string/signed_in_header" />-->
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="357dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -47,7 +47,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="0.55">
+                android:layout_weight="1.02">
 
                 <TextView
                     android:id="@+id/user_email"
@@ -59,46 +59,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/user_enabled_providers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!--<TextView-->
+                    <!--android:id="@+id/user_enabled_providers"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
 
             </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/sign_out"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_margin="16dp"
                 android:text="@string/sign_out" />
 
-            <!--<Button-->
-            <!--android:id="@+id/delete_account"-->
+        </LinearLayout>
+
+        <!--<LinearLayout-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_margin="16dp"-->
-            <!--android:text="@string/delete_account_label"-->
-            <!--android:theme="@style/WarnButton" />-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:orientation="horizontal">-->
 
-        </LinearLayout>
+            <!--&lt;!&ndash;<Button&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/delete_account"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_gravity="center"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_margin="16dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="@string/delete_account_label"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:theme="@style/WarnButton" />&ndash;&gt;-->
+
+        <!--</LinearLayout>-->
 
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="352dp"
-            android:layout_height="456dp"
+            android:layout_height="531dp"
             tools:context="com.example.mygooglemapslib.MapsActivity"
             android:layout_gravity="center_horizontal|bottom" />
 

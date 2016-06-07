@@ -36,7 +36,7 @@
     <string name="delete_account_label">Delete account</string>
     <string name="sign_out_failed">Sign out failed 😨</string>
     <string name="delete_account_failed">Delete account failed 😨</string>
-    <string name="user_profile_header">User profile:</string>
+    <string name="user_profile_header"></string>
     <string name="profile_picture_content_desc">Profile picture</string>
     <string name="default_theme">Default theme</string>
     <string name="configuration_required">Configuration is required - see README.md</string>

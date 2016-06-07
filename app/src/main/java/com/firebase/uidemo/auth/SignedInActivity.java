@@ -77,8 +77,8 @@ public class SignedInActivity extends FragmentActivity {
     @BindView(R.id.user_display_name)
     TextView mUserDisplayName;
 
-    @BindView(R.id.user_enabled_providers)
-    TextView mEnabledProviders;
+//    @BindView(R.id.user_enabled_providers)
+//    TextView mEnabledProviders;
 
 //    @BindView(R.id.textViewCondition)
 //    TextView mConditionTextView;
@@ -261,7 +261,7 @@ public class SignedInActivity extends FragmentActivity {
             }
         }
 
-        mEnabledProviders.setText(providerList);
+//        mEnabledProviders.setText(providerList);
 
     }
 
