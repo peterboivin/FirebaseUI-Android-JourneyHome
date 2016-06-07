@@ -14,32 +14,25 @@
 
 package com.firebase.uidemo.auth;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.mygooglemapslib.MapsActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.uidemo.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -51,11 +44,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Iterator;
 
@@ -76,23 +64,6 @@ public class SignedInActivity extends FragmentActivity {
 
     @BindView(R.id.user_display_name)
     TextView mUserDisplayName;
-
-//    @BindView(R.id.user_enabled_providers)
-//    TextView mEnabledProviders;
-
-//    @BindView(R.id.textViewCondition)
-//    TextView mConditionTextView;
-//
-//    @BindView(R.id.buttonSunny)
-//    Button mButtonSunny;
-//
-//    @BindView(R.id.buttonFoggy)
-//    Button mButtonFoggy;
-
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference mConditionRef = mRootRef.child("condition");
-
-    private MapsActivity mapsActivity;
 
     private static final String TAG = "SignInActivity";
 
@@ -115,8 +86,6 @@ public class SignedInActivity extends FragmentActivity {
         ButterKnife.bind(this);
         populateProfile();
 
-//        setConditions();
-
         try {
             if (googleMap == null) {
                 googleMap = ((SupportMapFragment) getSupportFragmentManager().
@@ -130,42 +99,10 @@ public class SignedInActivity extends FragmentActivity {
 
             Marker TP = googleMap.addMarker(new MarkerOptions().
                     position(TutorialsPoint).title("Journey Home"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-//    private void setConditions() {
-//        Log.d(TAG, "setConditions ");
-//        mConditionRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String text = dataSnapshot.getValue(String.class);
-//                mConditionTextView.setText(text);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//        mButtonSunny.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mConditionRef.setValue("Sunny");
-//            }
-//        });
-//
-//        mButtonFoggy.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mConditionRef.setValue("Foggy");
-//            }
-//        });
-//    }
 
     @OnClick(R.id.sign_out)
     public void signOut() {
@@ -184,40 +121,6 @@ public class SignedInActivity extends FragmentActivity {
                     }
                 });
     }
-
-//    @OnClick(R.id.delete_account)
-//    public void deleteAccountClicked() {
-//
-//        AlertDialog dialog = new AlertDialog.Builder(this)
-//                .setMessage("Are you sure you want to delete this account?")
-//                .setPositiveButton("Yes, nuke it!", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        deleteAccount();
-//                    }
-//                })
-//                .setNegativeButton("No", null)
-//                .create();
-//
-//        dialog.show();
-//    }
-
-//    private void deleteAccount() {
-//        FirebaseAuth.getInstance()
-//                .getCurrentUser()
-//                .delete()
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            startActivity(AuthUiActivity.createIntent(SignedInActivity.this));
-//                            finish();
-//                        } else {
-//                            showSnackbar(R.string.delete_account_failed);
-//                        }
-//                    }
-//                });
-//    }
 
     @MainThread
     private void populateProfile() {
@@ -260,9 +163,6 @@ public class SignedInActivity extends FragmentActivity {
                 }
             }
         }
-
-//        mEnabledProviders.setText(providerList);
-
     }
 
     @MainThread
